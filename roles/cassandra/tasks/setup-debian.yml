@@ -1,0 +1,30 @@
+---
+- name: Install OpenJDK JRE 8
+  apt:
+    name: openjdk-8-jdk
+    state: present
+    update_cache: true
+
+- name: Add Cassanra GPG Key
+  apt_key:
+    url: https://www.apache.org/dist/cassandra/KEYS
+    state: present
+
+- name: Add Cassandra Repo
+  apt_repository:
+    repo: deb http://www.apache.org/dist/cassandra/debian 311x main
+    state: present
+
+- name: Install Apache Cassandra
+  apt:
+    name: cassandra
+    state: present
+    update_cache: true
+
+- name: Create cassandra config `/etc/cassandra/cassandra.yaml`
+  template:
+    src:  cassandra.yaml.j2
+    dest: /etc/cassandra/cassandra.yaml
+    owner: root
+    mode: 0644
+  become: yes

@@ -1,0 +1,66 @@
+---
+- name: Add RabbitMQ GPG apt Key
+  apt_key:
+    url: https://keys.openpgp.org/vks/v1/by-fingerprint/0A9AF2115F4687BD29803A206B73A36E6026DFCA 
+    state: present
+
+- name: Add PackageCloud RabbitMQ GPG apt Key
+  apt_key:
+    url: https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey
+    state: present
+
+- name: Add Erlang GPG apt Key
+  apt_key:
+    url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xf77f1eda57ebb1cc
+    state: present
+
+- name: Install prerequisite library
+  apt:
+    name:
+      - curl
+      - gnupg
+      - apt-transport-https
+
+- name: Add Erlang Repo
+  ansible.builtin.apt_repository:
+    repo: deb http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/ubuntu focal main
+    state: present
+
+- name: Add Erlang Src Repo
+  ansible.builtin.apt_repository:
+    repo: deb-src http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/ubuntu focal main
+    state: present
+
+- name: Add RabbitMQ Repo
+  ansible.builtin.apt_repository:
+    repo: deb https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/ focal main
+    state: present
+
+- name: Add RabbitMQ Source Repo
+  ansible.builtin.apt_repository:
+    repo: deb-src https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/ focal main
+    state: present
+
+- name: Install Erlang & RabbitMQ
+  apt:
+    name: 
+      - erlang-base
+      - erlang-asn1 
+      - erlang-crypto 
+      - erlang-eldap 
+      - erlang-ftp 
+      - erlang-inets
+      - erlang-mnesia 
+      - erlang-os-mon 
+      - erlang-parsetools 
+      - erlang-public-key
+      - erlang-runtime-tools 
+      - erlang-snmp 
+      - erlang-ssl
+      - erlang-syntax-tools 
+      - erlang-tftp 
+      - erlang-tools 
+      - erlang-xmerl
+      - rabbitmq-server
+    state: present
+    update_cache: true

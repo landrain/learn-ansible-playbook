@@ -1,0 +1,44 @@
+---
+- include_tasks: setup-redhat.yml
+  when: ansible_os_family == 'RedHat'
+  
+# - include_tasks: setup-debian.yml
+#   when: ansible_os_family == 'Debian'
+
+- name: Disabling Swap on all nodes
+  shell: "swapoff -a"
+
+- name: Commenting Swap entries in /etc/fstab
+  replace:
+    path: /etc/fstab
+    regexp: '(^/.*swap*)'
+    replace: '# \1'
+
+- name: Add IPs to /etc/hosts on all node
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item }}$'
+    line: "{{ hostvars[item].ansible_host }} {{item}}"
+    state: present
+  when: hostvars[item].ansible_host is defined
+  with_items: "{{ groups.all }}"
+
+- name: be sure firewalld is stopped
+  systemd: name=firewalld state=stopped
+  ignore_errors: yes
+  tags:
+    - firewalld
+
+- name: remove the firewalld
+  yum:
+    name: firewalld
+    state: absent
+
+- name: install standard tools
+  yum:
+    name:
+      - wget
+      - telnet
+      - nano
+    state: present
+    update_cache: true

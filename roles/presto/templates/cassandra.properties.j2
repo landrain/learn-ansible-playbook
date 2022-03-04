@@ -1,0 +1,5 @@
+connector.name=cassandra
+cassandra.contact-points={{ hostvars['node-presto'].ansible_host }}
+cassandra.native-protocol-port=9042
+cassandra.username={{ cassandra_user }}
+cassandra.password={{ cassandra_password }}

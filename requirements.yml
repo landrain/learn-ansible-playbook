@@ -1,0 +1,5 @@
+---
+collections:
+  - name: community.mysql
+  - name: community.cassandra
+  - name: community.mongodb

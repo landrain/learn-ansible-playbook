@@ -1,0 +1,35 @@
+---
+- name: Create Admin User
+  community.mongodb.mongodb_user:
+    database: admin
+    name: '{{ mongo_admin_user }}'
+    password: '{{ mongo_admin_password }}'
+    auth_mechanism: "SCRAM-SHA-1"
+    roles: userAdminAnyDatabase,clusterAdmin,root
+    state: present
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    
+
+- name: Copy mongod.conf to /etc/
+  template:
+    src:  mongod-redhat.conf.j2
+    dest: /etc/mongod.conf
+    owner: root
+    mode: 0755  
+  become: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Copy mongod.conf to /etc/
+  template:
+    src:  mongod-debian.conf.j2
+    dest: /etc/mongod.conf
+    owner: root
+    mode: 0755  
+  become: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Retart MongoDB Server
+  ansible.builtin.systemd:
+    name: mongod
+    state: restarted

@@ -1,0 +1,12 @@
+[Unit]
+Description=PrestoDB 
+Documentation=https://prestodb.io/docs/current/installation/deployment.html
+ 
+[Service]
+ExecStart=/opt/presto/bin/launcher run
+TimeoutStopSec=5
+Restart=on-failure
+User=root
+ 
+[Install]
+WantedBy=multi-user.target

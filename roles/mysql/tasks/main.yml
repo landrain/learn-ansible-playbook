@@ -1,0 +1,14 @@
+---
+- include_tasks: setup-redhat.yml
+  when: ansible_os_family == 'RedHat'
+  
+- include_tasks: setup-debian.yml
+  when: ansible_os_family == 'Debian'
+  
+- name: Create  Database
+  include_tasks: create-db.yml
+  run_once: yes
+
+- name: Create DB User & Grant
+  include_tasks: create-user.yml
+  run_once: yes

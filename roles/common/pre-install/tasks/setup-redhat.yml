@@ -1,0 +1,8 @@
+---
+- name: disable SELinux
+  command: setenforce 0
+  ignore_errors: yes
+
+- name: disable SELinux on reboot
+  selinux:
+    state: disabled

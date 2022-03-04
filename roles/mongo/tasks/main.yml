@@ -1,0 +1,18 @@
+---
+- include_tasks: setup-redhat.yml
+  when: ansible_os_family == 'RedHat'
+  
+- include_tasks: setup-debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Install PyMongo for python3
+  shell: pip3 install pymongo
+
+- name: Start MongoDB Server
+  ansible.builtin.systemd:
+    name: mongod
+    state: started
+
+- name: Create User & DB
+  include_tasks: create-user-and-db.yml
+  run_once: yes

@@ -1,0 +1,22 @@
+---
+- name: Install Redis
+  apt:
+    name: redis
+    state: present
+    update_cache: true
+
+- name: Add redis config to `/etc/redis/redis.conf` 
+  template:
+    src:  redis-debian.conf.j2
+    dest: /etc/redis/redis.conf
+    owner: root
+    mode: 0644
+  become: yes
+
+- name: Add redis sentinel config to `/etc/redis/redis-sentinel.conf`
+  template:
+    src:  sentinel.conf.j2
+    dest: /etc/redis/redis-sentinel.conf
+    owner: root
+    mode: 0644
+  become: yes

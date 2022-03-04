@@ -1,0 +1,14 @@
+---
+- name: Create user 
+  community.cassandra.cassandra_cqlsh:
+    login_host: "{{ hostvars['node-cassandra'].ansible_host }}"
+    username: '{{ cassandra_user }}'
+    password: '{{ cassandra_password }}'
+    execute: "CREATE ROLE {{ cassandra_data1_user }} with LOGIN = true and PASSWORD = '{{ cassandra_data1_password }}';"
+
+- name: Create keyspace 
+  community.cassandra.cassandra_cqlsh:
+    login_host: "{{ hostvars['node-cassandra'].ansible_host }}"
+    username: '{{ cassandra_user }}'
+    password: '{{ cassandra_password }}'
+    execute: "CREATE KEYSPACE {{ cassandra_data1_keyspace }} WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '2'};"

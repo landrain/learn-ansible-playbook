@@ -1,0 +1,31 @@
+---
+- include_tasks: setup-redhat.yml
+  when: ansible_os_family == 'RedHat'
+  
+- include_tasks: setup-debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Enable Cassandra Service on Boot
+  ansible.builtin.systemd:
+    name: cassandra
+    enabled: yes
+
+- name: Start Cassandra Server
+  ansible.builtin.systemd:
+    name: cassandra
+    state: started
+
+- name: Set python path for cqlsh
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    regexp: '^PYTHONPATH'
+    line: 'PYTHONPATH=$PYTHONPATH:/usr/lib/python3.6/site-packages/'
+
+- name: Wait for cassandra to start ( 5 Minutes )
+  wait_for:
+    timeout: 60
+
+- name: Create User, Keyspace & Structure
+  include_tasks: create-user-and-keyspace.yml
+  run_once: yes

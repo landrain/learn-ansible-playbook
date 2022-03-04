@@ -1,0 +1,8 @@
+listen_address:{{ hostvars['node-cassandra'].ansible_host }}
+authenticator: PasswordAuthenticator
+authorizer: CassandraAuthorizer
+rpc_address:{{ hostvars['node-cassandra'].ansible_host }}
+seed_provider:
+  - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+    parameters:
+         - seeds: "{{ hostvars['node-cassandra'].ansible_host }}"

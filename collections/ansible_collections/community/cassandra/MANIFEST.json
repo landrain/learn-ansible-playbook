@@ -1,0 +1,35 @@
+{
+ "collection_info": {
+  "namespace": "community",
+  "name": "cassandra",
+  "version": "1.0.6",
+  "authors": [
+   "Rhys Campbell"
+  ],
+  "readme": "README.md",
+  "tags": [
+   "cassandra",
+   "nosql",
+   "database",
+   "datastore"
+  ],
+  "description": null,
+  "license": [],
+  "license_file": "LICENSE",
+  "dependencies": {
+   "community.general": ">=0.1.1"
+  },
+  "repository": "https://github.com/ansible-collections/community.cassandra",
+  "documentation": "https://github.com/ansible-collections/community.cassandra/tree/master/docs",
+  "homepage": "https://github.com/ansible-collections/community.cassandra",
+  "issues": "https://github.com/ansible-collections/community.cassandra/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"
+ },
+ "file_manifest_file": {
+  "name": "FILES.json",
+  "ftype": "file",
+  "chksum_type": "sha256",
+  "chksum_sha256": "b7863da2a233f791c254e51e068c5784f7ce390c06487c3bf3e934a6314e196a",
+  "format": 1
+ },
+ "format": 1
+}

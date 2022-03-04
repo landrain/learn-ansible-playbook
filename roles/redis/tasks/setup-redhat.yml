@@ -1,0 +1,28 @@
+---
+- name: Enable EPEL ( Extra Package )
+  yum:
+    name: epel-release
+    state: present
+    update_cache: true
+
+- name: Install Redis
+  yum:
+    name: redis
+    state: present
+    update_cache: true
+
+- name: Add redis config to `/etc/redis.conf` 
+  template:
+    src:  redis-redhat.conf.j2
+    dest: /etc/redis.conf
+    owner: root
+    mode: 0644
+  become: yes
+
+- name: Add redis sentinel config to `/etc/redis-sentinel.conf`
+  template:
+    src:  sentinel.conf.j2
+    dest: /etc/redis-sentinel.conf
+    owner: root
+    mode: 0644
+  become: yes

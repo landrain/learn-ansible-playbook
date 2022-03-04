@@ -1,0 +1,7 @@
+---
+cassandra_user: cassandra
+cassandra_password: cassandra
+
+cassandra_data1_user: data1
+cassandra_data1_password: Str0ngP4SS
+cassandra_data1_keyspace: data1

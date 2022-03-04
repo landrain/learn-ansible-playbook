@@ -1,0 +1,7 @@
+---
+- name: Create & grant 
+  community.mysql.mysql_user:
+    name: '{{ user_app1 }}'
+    password: '{{ password_app1 }}'
+    priv: '{{ database_app1 }}.*:ALL,GRANT'
+    host: '%'

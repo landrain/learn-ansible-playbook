@@ -1,0 +1,11 @@
+---
+
+- name: Start RabbitMQ Server
+  ansible.builtin.systemd:
+    name: rabbitmq-server
+    state: started
+
+- name: Restart RabbitMQ Server
+  ansible.builtin.systemd:
+    name: rabbitmq-server
+    state: restarted

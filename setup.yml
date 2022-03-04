@@ -1,0 +1,36 @@
+---
+- hosts: mysql
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: mysql, tags: mysql }
+
+- hosts: cassandra
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: cassandra, tags: cassandra }
+
+- hosts: presto
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: presto, tags: presto }
+
+- hosts: rabbit
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: rabbit, tags: rabbit }
+
+- hosts: mongo
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: mongo, tags: mongo }
+
+- hosts: redis
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: redis, tags: redis }

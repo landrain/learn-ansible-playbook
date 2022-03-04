@@ -1,0 +1,73 @@
+---
+- include_tasks: setup-redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include_tasks: setup-debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Download & Extract Presto Tarball
+  ansible.builtin.unarchive:
+    src: https://repo1.maven.org/maven2/com/facebook/presto/presto-server/0.260.1/presto-server-0.260.1.tar.gz
+    dest: ~/
+    remote_src: yes
+
+- name: Get presto folder name
+  shell: cd ~/ && ls | grep presto
+  register : presto_folder_name
+
+- name: Create etc directory inside /opt/presto/
+  file:
+    path: /opt/presto/
+    state: directory
+    mode: 0644
+
+- name: Copy Presto Server to /opt/
+  command: cp -r ~/{{ presto_folder_name.stdout }}/* /opt/presto
+
+- name: Create etc directory inside /opt/presto/
+  file:
+    path: /opt/presto/etc
+    state: directory
+    mode: 0644
+
+- name: Copy Config file to /opt/presto/etc
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+  loop:
+    - { src: '../templates/config.properties.j2', dest: '/opt/presto/etc/config.properties' }
+    - { src: '../templates/jvm.config.j2', dest: '/opt/presto/etc/jvm.config' }
+    - { src: '../templates/log.properties.j2', dest: '/opt/presto/etc/log.properties' }
+    - { src: '../templates/node.properties.j2', dest: '/opt/presto/etc/node.properties' }
+
+- name: Create catalog directory inside /opt/presto/etc
+  file:
+    path: /opt/presto/etc/catalog
+    state: directory
+    mode: 0644
+
+- name: Add cassandra variable
+  include_vars: group_vars/cassandra.yml
+
+- name: Copy catalog config into /opt/presto/etc/catalog
+  template:
+    src: cassandra.properties.j2
+    dest: /opt/presto/etc/catalog/cassandra.properties
+    mode: 0644
+  
+- name: Copy presto.service to systemd
+  copy:
+    src: "presto.service"
+    dest: "/usr/lib/systemd/system/presto.service"
+    mode: 0755
+
+- name: Start Presto
+  ansible.builtin.systemd:
+    name: presto.service
+    state: started
+
+- name: Enable Presto
+  ansible.builtin.systemd:
+    name: presto.service
+    enabled: yes

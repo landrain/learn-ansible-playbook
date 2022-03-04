@@ -1,0 +1,13 @@
+---
+
+- name: Set Rabbit policy HA
+  command: rabbitmqctl set_policy ha-all ".*" '{"ha-mode":"all"}'
+  become: yes
+
+- name: Check List Rabbit Policy
+  command: rabbitmqctl list_policies
+  become: yes
+  register: list_policies
+
+- name: Print List Rabbit Policy
+  debug: msg="{{ list_policies.stdout_lines }}"

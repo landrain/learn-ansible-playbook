@@ -1,0 +1,23 @@
+---
+- name: Add MongoDB Repo
+  yum_repository:
+    name: mongodb
+    description: MongoDB Repository
+    baseurl: https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.4/x86_64/
+    gpgkey: https://www.mongodb.org/static/pgp/server-4.4.asc
+    gpgcheck: yes
+
+- name: Enable EPEL Repo
+  yum:
+    name: 
+      - epel-release
+    state: present
+    update_cache: true
+
+- name: Install MongoDB & Additional Tools ( Python3 & PyMongo )
+  yum:
+    name: 
+      - mongodb-org 
+      - python3
+    state: present
+    update_cache: true

@@ -1,0 +1,34 @@
+---
+- include_tasks: setup-redhat.yml
+  when: ansible_os_family == 'RedHat'
+  
+- include_tasks: setup-debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Enable RabbitMQ Service on Boot
+  ansible.builtin.systemd:
+    name: rabbitmq-server
+    enabled: yes
+
+- name: Start RabbitMQ Server
+  ansible.builtin.systemd:
+    name: rabbitmq-server
+    state: started
+
+- name: Enable RabbitMQ Management Plugin
+  command: rabbitmq-plugins enable rabbitmq_management
+  become: yes
+
+- name: Restart RabbitMQ Server
+  ansible.builtin.systemd:
+    name: rabbitmq-server
+    state: restarted
+
+- name: Create Admin User
+  include_tasks: create-admin-user.yml
+  run_once: yes
+
+
+- name: Setup Queue Mirroring
+  include_tasks: setup-queue-mirroring.yml
+  run_once: yes
